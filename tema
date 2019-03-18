@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Agenda telefonica</title>
+</head>
+<style>
+body {
+	background-image: url(https://cdn.pixabay.com/photo/2015/06/08/15/11/typewriter-801921_960_720.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+	overflow-x: hidden;
+	margin: 0;
+	padding: 0;
+	font-family: sans-serif;
+}
+
+h1 {
+	text-align: center;
+	margin-top: 35px;
+	font-size: 50px;
+	color: #304946;
+}
+
+#agenda {
+	margin-top: 80px;
+	font-size: 20px;
+	
+	width: 60%;
+	margin:auto;
+	padding-left: 40px;
+}
+
+.input-part {
+	margin-top: 48px;
+	font-size: 25px;
+	text-align: center;
+	padding-bottom: 16px;
+	color: #304946;
+	background-color: 	#D0C7A8;
+}
+
+input {
+	border-radius: 5px;
+	background-color: ##D0C7A8;
+}
+
+button {
+	background-color: #5B5A55;
+	border-radius: 6px;
+	font-size: 18px;
+	font-weight: bold;
+	font-style: italic;
+	color: #D0C7A8;
+
+}
+
+table {
+	background-color: 	#D0C7A8;
+	text-align: center;
+	margin-top: 80px;
+	width: 100%;
+	float: right;
+}
+td, thead{
+	color: #304946;
+
+}
+</style>
+<script>
+	var agenda = [
+	];
+	
+	function add() {
+		var nume=document.querySelector('[name="nume"]').value;
+		var telefon=document.querySelector('[name="telefon"]').value;
+		var newEntry = {
+			nume,
+			telefon
+		};
+		agenda.push(newEntry);
+		document.getElementById('editPhone').innerHTML='';
+  		document.getElementById('editName').innerHTML='';
+  		draw();
+  			
+	}
+
+	function draw () {
+		var str =``;
+		for (var i =0; i<agenda.length; i++) {
+			str +=`
+			<tr>
+				<td id="tableName">${agenda[i].nume}</td>
+				<td id="tablePhone">${agenda[i].telefon}</td>
+				<td><button onclick="editeaza(${i});">Modifica</button></td>
+				<td><button onclick="sterge(${i});">Sterge</button></td>
+			</tr>
+			 `;
+		}
+		document.querySelector("table>tbody").innerHTML=str;
+		document.getElementById('editName').value='';
+		document.getElementById('editPhone').value='';
+	}
+	function sterge(idx){
+			if(confirm(`Esti sigur ca vrei sa stergi contactul: ${agenda[idx].nume}?`)){
+				agenda.splice(idx,1);
+				draw();
+			}
+	}
+
+	function editeaza(idx){
+				var entry = agenda[idx];
+				var inputs = document.querySelectorAll(".input-part input[name]");
+				
+				for(var i=0;i<inputs.length;i++){
+					var a = inputs[i].getAttribute("name");
+					inputs[i].value=entry[a];	
+				}		
+			}
+				
+			
+	function enterKey(event){
+		
+		  if (event.keyCode === 13) {
+		  	
+		  	document.getElementById("Btn").click();
+		  }
+		
+	}
+</script>
+<body>
+	<div id="agenda">	
+		<h1>Agenda</h1>
+		<div class="input-part">
+			<label for="editName">Nume</label>
+			<input type="text" name="nume" id="editName">
+
+			<label for="editPhone">Telefon</label>
+			<input type="text" name="telefon" id="editPhone" onkeypress="enterKey(event);">
+
+			<button id="Btn" onclick="add();">Adauga</button>
+		</div>
+		<table id="myTable">
+			<thead>
+				<tr>
+					<th >Nume</th>
+					<th >Telefon</th>
+				</tr>
+			<thead>
+			<tbody></tbody>	
+		</table>
+	</div>
+</body>
+</html>
